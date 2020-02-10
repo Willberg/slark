@@ -7,6 +7,7 @@ from skimage.metrics import mean_squared_error as mse_ski
 from skimage.metrics import structural_similarity as ssim
 
 
+# 比较图片的相似情况
 def compareImages(a_path, b_path):
     a = plt.imread(a_path)
     b = plt.imread(b_path)
@@ -21,6 +22,7 @@ def compareImages(a_path, b_path):
     print("MSE With Ski: %.2f, SSIM: %.2f" % (m2, s * 100) + "%")
 
 
+# 修改图片的大小，以小图为准
 def change_size(path_a, path_b):
     a = cv2.imread(path_a)
     b = cv2.imread(path_b)
@@ -38,13 +40,23 @@ def change_size(path_a, path_b):
     return a_dst, b_dst
 
 
-def save_to_disk(img_path, img):
+# 保存图片到磁盘
+def sample_save_to_disk(a_src_path, b_src_path, a_dst_path, b_dst_path):
     if os.path.exists(a_dst_path) or os.path.exists(b_dst_path):
-        a, b = change_size(src_base + a_path, src_base + b_path)
+        a, b = change_size(a_src_path, b_src_path)
 
         # 将图片写入磁盘
         cv2.imwrite(a_dst_path, a)
         cv2.imwrite(b_dst_path, b)
+
+
+# 归类图片
+def classify_imgs(src_path, dst_path):
+    pass
+
+
+def adjust_imgs(src_path, dst_path):
+    pass
 
 
 if __name__ == '__main__':
@@ -54,7 +66,11 @@ if __name__ == '__main__':
     a_path = '5e3e4d661ea3649bc2eb86b1.jpg'
     b_path = '5e3e4d681ea3649bc2eb86b4.jpg'
 
+    a_src_path = src_base + a_path
+    b_src_path = src_base + b_path
     a_dst_path = dst_base + a_path
     b_dst_path = dst_base + b_path
+
+    sample_save_to_disk(a_src_path, b_src_path, a_dst_path, b_dst_path)
 
     compareImages(a_dst_path, b_dst_path)
