@@ -7,16 +7,18 @@ from skimage.metrics import mean_squared_error as mse_ski
 from skimage.metrics import structural_similarity as ssim
 
 
-def compareImages(imageA, imageB):
+def compareImages(a_path, b_path):
+    a = plt.imread(a_path)
+    b = plt.imread(b_path)
     # 权重计算
     weight = np.array([0.64, 0.35, 0.01])
-    a1 = np.dot(imageA, weight)
-    b1 = np.dot(imageB, weight)
+    a1 = np.dot(a, weight)
+    b1 = np.dot(b, weight)
 
     m2 = mse_ski(a1, b1)  # skimage封装函数
     s = ssim(a1, b1)
 
-    print("MSE With Ski: %.2f, SSIM: %.2f" % (m2, s))
+    print("MSE With Ski: %.2f, SSIM: %.2f" % (m2, s * 100) + "%")
 
 
 def change_size(path_a, path_b):
@@ -36,6 +38,15 @@ def change_size(path_a, path_b):
     return a_dst, b_dst
 
 
+def save_to_disk(img_path, img):
+    if os.path.exists(a_dst_path) or os.path.exists(b_dst_path):
+        a, b = change_size(src_base + a_path, src_base + b_path)
+
+        # 将图片写入磁盘
+        cv2.imwrite(a_dst_path, a)
+        cv2.imwrite(b_dst_path, b)
+
+
 if __name__ == '__main__':
     src_base = "/home/john/tmp/images/src/"
     dst_base = "/home/john/tmp/images/dst/"
@@ -46,14 +57,4 @@ if __name__ == '__main__':
     a_dst_path = dst_base + a_path
     b_dst_path = dst_base + b_path
 
-    if os.path.exists(a_dst_path) or os.path.exists(b_dst_path):
-        a, b = change_size(src_base + a_path, src_base + b_path)
-
-        # 将图片写入磁盘
-        cv2.imwrite(a_dst_path, a)
-        cv2.imwrite(b_dst_path, b)
-
-    a = plt.imread(dst_base + a_path)
-    b = plt.imread(dst_base + b_path)
-
-    compareImages(a, b)
+    compareImages(a_dst_path, b_dst_path)
