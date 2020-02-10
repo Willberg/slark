@@ -205,10 +205,14 @@ def runAllImageSimilaryFun(para1, para2):
     print('三直方图算法相似度：', n4)
 
     n5 = calculate(img1, img2)
-    print("单通道的直方图", n5)
-    print("%d %d %d %.2f %.2f " % (n1, n2, n3, round(n4[0], 2), n5[0]))
-    print("%.2f %.2f %.2f %.2f %.2f " % (1 - float(n1 / 64), 1 -
-                                         float(n2 / 64), 1 - float(n3 / 64), round(n4[0], 2), n5[0]))
+    print("单通道的直方图:", n5)
+    print("%d %d %d %.2f %.2f \n\n" % (n1, n2, n3, round(n4[0], 2), n5[0]))
+    print("均值哈希算法相似度:%s \n 差值哈希算法相似度dHash：%s \n 感知哈希算法相似度pHash：%s \n 三直方图算法相似度：%s \n 单通道的直方图:%s \n"
+          % (str((1 - float(n1 / 64)) * 100) + "%",
+             str((1 - float(n2 / 64)) * 100) + "%",
+             str((1 - float(n3 / 64)) * 100) + "%",
+             str(round(n4[0], 4) * 100) + "%",
+             str(n5[0] * 100) + "%"))
 
     plt.subplot(121)
     plt.imshow(Image.fromarray(cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)))
