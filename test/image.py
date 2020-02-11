@@ -100,8 +100,13 @@ def classify_imgs(src_path):
 
         if not os.path.exists(dst_path + '/' + k):
             shutil.move(src_path + '/' + k, dst_path)
+        else:
+            img_name = src_path + '/' + k
+            os.remove(img_name)
+            print(img_name)
 
 
+# 调整图片
 def adjust_imgs(src_path, dst_path):
     pass
 

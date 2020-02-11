@@ -51,7 +51,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_search_some(self):
         try:
-            rtz_doc_list = RtzDoc.objects()[5:105]
+            rtz_doc_list = RtzDoc.objects()[105:200]
             for rtz_doc in rtz_doc_list:
                 self.save_to_file(rtz_doc, '/home/john/tmp/images/src/tmp/')
         except Exception as e:
