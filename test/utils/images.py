@@ -4,7 +4,6 @@ import shutil
 
 import cv2
 
-# 比较图片的相似情况
 from test.utils.fs import mkdir_loop
 from test.utils.sort import ImgQuickSort
 
