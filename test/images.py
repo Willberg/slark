@@ -5,7 +5,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
+# 比较图片的相似情况
 from PIL import Image
+from skimage.metrics import mean_squared_error as mse_ski
+from skimage.metrics import structural_similarity as ssim
 
 matplotlib.use('TkAgg')
 
@@ -221,7 +224,23 @@ def runAllImageSimilaryFun(para1, para2):
     plt.show()
 
 
+def sample_compare_two_img(a_path, b_path):
+    a = plt.imread(a_path)
+    b = plt.imread(b_path)
+    # 权重计算
+    weight = np.array([0.64, 0.35, 0.01])
+    a1 = np.dot(a, weight)
+    b1 = np.dot(b, weight)
+
+    m2 = mse_ski(a1, b1)  # skimage封装函数
+    s = ssim(a1, b1)
+
+    print("MSE With Ski: %.2f, SSIM: %.2f" % (m2, s * 100) + "%")
+
+
 if __name__ == "__main__":
     p1 = "/home/john/tmp/images/dst/5e3e4d661ea3649bc2eb86b1.jpg"
     p2 = "/home/john/tmp/images/dst/5e3e4d681ea3649bc2eb86b4.jpg"
-    runAllImageSimilaryFun(p1, p2)
+    # runAllImageSimilaryFun(p1, p2)
+
+    sample_compare_two_img(p1, p2)
