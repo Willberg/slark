@@ -108,7 +108,35 @@ def classify_imgs(src_path):
 
 # 调整图片
 def adjust_imgs(src_path, dst_path):
-    pass
+    dir_names = set()
+    # 扫描所有文件，获得路径
+    ds = os.listdir(src_path)
+    for d in ds:
+        f = os.path.join(src_path, d)
+        if os.path.isdir(f):
+            title = f.title().split('/')[-1].lower()
+            if 'x' in title:
+                dir_names.add(title)
+
+    # 构造存放路径和修改尺寸
+    for dir_name in dir_names:
+        width, height = dir_name.split("x")
+        width = int(width)
+        height = int(height)
+        save_path = dst_path + '/' + dir_name
+        if not os.path.exists(save_path):
+            mkdir_loop(save_path)
+
+        # 调整图片并保存
+        ds = os.listdir(src_path + "/" + dir_name)
+        for d in ds:
+            f = os.path.join(src_path, dir_name, d)
+            if os.path.isfile(f):
+                title = f.title().split('/')[-1].lower()
+                if not os.path.exists(save_path + "/" + title):
+                    img = cv2.imread(f)
+                    cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
+                    cv2.imwrite(save_path + "/" + title, img)
 
 
 def sample_compare_two_img():
@@ -130,4 +158,5 @@ def sample_compare_two_img():
 
 if __name__ == '__main__':
     # sample_compare_two_img()
-    classify_imgs('/home/john/tmp/images/src')
+    # classify_imgs('/home/john/tmp/images/src')
+    adjust_imgs('/home/john/tmp/images/src', '/home/john/tmp/images/dst')
